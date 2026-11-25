@@ -4,8 +4,6 @@
   <img alt="Platform.Shared — building blocks for .NET microservices" src="https://github.com/platform-shared/.github/raw/main/profile/banner-dark.png">
 </picture>
 
-### Platform.Shared — building blocks for .NET microservices
-
 The plumbing every service needs, written and proven once: a service brings its domain, these libraries bring the
 rest. They know no product — capabilities only, never a domain feature.
 
