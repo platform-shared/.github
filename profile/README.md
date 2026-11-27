@@ -16,14 +16,15 @@ rest. They know no product — capabilities only, never a domain feature.
 | `Platform.Shared.Web` | One error contract (ProblemDetails with an error code and the trace), readiness a container's health check can ask, rate limits, request logs, settings from an environment file |
 | `Platform.Shared.Security` | JWT bearer sign-in, every route closed unless it says it is open, the caller's id read in one place, scopes, the admin policy |
 | `Platform.Shared.Messaging` | MassTransit on RabbitMQ: retries, the inbox and the outbox (a service that only consumes gets the inbox alone), one trace across the broker |
-| `Platform.Shared.Caching` | Redis as a best-effort cache: it speeds a read up and never fails one; an entry is read only in the shape it was written in |
+| `Platform.Shared.Caching` | Redis as a best-effort cache: it speeds a read up and never fails one; an entry is read only in the shape it was written in, and a read never puts back a value a write replaced meanwhile |
 | `Platform.Shared.Storage` | Any S3-compatible object storage, its buckets made at start |
-| `Platform.Shared.Testing` | The test kit: containers at the stack's own versions, a quiet step log, an OpenID Connect stand-in, the checks of a list's index, a schema, the settings and who may call each route |
+| `Platform.Shared.Bff` | A backend-for-frontend in a few calls: the sign-in by Authorization Code + PKCE, the session in Redis behind a random secret in an HttpOnly cookie, the access token refreshed in silence — one refresh per session at a time, its expiry never guessed — and attached to every proxied request, CSRF, the sign-out with revocation |
+| `Platform.Shared.Testing` | The test kit: containers at the stack's own versions, a quiet step log, an OpenID Connect stand-in, the checks of a list's index, a schema, the settings and who may call each route, a check that names every problem it finds, a test host's requests from a proxy's address |
 | `Platform.Shared.Build` | The shared checks every project of a repository builds under: the analyzers, every warning an error, the banned APIs, the dependency rule of a service's layers, the audit of vulnerable packages, the secret scanner's rules |
 
 **Proven where it lives:** retries and the outbox on a real broker, the trace across it, the cache's failure, the
-database's collation, the body limit on a real Kestrel, a lost concurrent change refused — each tested here once, so a
-service tests only its own configuration.
+database's collation, the body limit on a real Kestrel, a lost concurrent change refused, a BFF's sign-in, refresh and
+sign-out against an OpenID Connect stand-in — each tested here once, so a service tests only its own configuration.
 
 Versioned together (one version for every package), published to GitHub Packages, each version's notes on the
 repository's Releases page.
